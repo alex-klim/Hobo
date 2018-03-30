@@ -12,7 +12,7 @@ int main(int argc, char *argv[])
     QGuiApplication app(argc, argv);
 
     qmlRegisterType<Tester>("cpp.helptypes", 1, 0, "Tester");
-    qmlRegisterType<Tester>("cpp.helptypes", 1, 0, "TableModel");
+    qmlRegisterType<TableModel>("cpp.helptypes", 1, 0, "TableModel");
 
     QQmlApplicationEngine engine;
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
