@@ -14,7 +14,9 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += main.cpp \
     tester.cpp \
-    tablemodel.cpp
+    tablemodel.cpp \
+    downloadmanager.cpp \
+    pageparser.cpp
 
 RESOURCES += qml.qrc
 
@@ -31,4 +33,6 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 HEADERS += \
     tester.h \
-    tablemodel.h
+    tablemodel.h \
+    downloadmanager.h \
+    pageparser.h

@@ -72,28 +72,28 @@ Window {
         }
 
         TextField {
-            id: textField
+            id: startUrl
             Layout.columnSpan: 2
             Layout.preferredWidth: 200
             Layout.alignment: Qt.AlignHCenter
-            placeholderText: qsTr("http://developex.com.ua")
+            placeholderText: qsTr("http://anysite.com")
         }
 
         TextField {
-            id: textField1
+            id: searchWord
             Layout.columnSpan: 2
             placeholderText: qsTr("developer")
         }
 
         TextField {
-            id: textField2
+            id: maxThreads
             Layout.columnSpan: 2
             Layout.preferredWidth: 50
             placeholderText: qsTr("2")
         }
 
         TextField {
-            id: textField3
+            id: maxUrls
             Layout.columnSpan: 2
             Layout.preferredWidth: 50
             placeholderText: qsTr("10")
@@ -105,20 +105,18 @@ Window {
         y: 118
         spacing: 10
 
-        TableModel {
-            id: myModel
-        }
-
         TableView {
             id: tableView
             Layout.rowSpan: 7
             Layout.columnSpan: 8
             Layout.preferredHeight: 224
             Layout.preferredWidth: 431
-            Tester {
-                id: mytester
+
+            DManager {
+                id: dmanager
             }
-            /*TableViewColumn {
+
+            TableViewColumn {
                     role: "url"
                     title: "URL"
                     width: 310
@@ -127,8 +125,11 @@ Window {
                     role: "status"
                     title: "Status"
                     width: 119
-            }*/
-            model: myModel
+            }
+
+            model: TableModel {
+              id: myModel
+            }
         }
 
         ListModel {
@@ -156,13 +157,7 @@ Window {
             id: button
             text: qsTr("Button")
             onClicked: {
-                if (mytester.counter >= 100 || mytester.counter < 0) {
-                    progressBar.setValue(0);
-                    mytester.counter = 0;
-                    return;
-                }
-                mytester.counter = mytester.counter + 10;
-                progressBar.setValue(progressBar.value+10);
+                dmanager.fetchPage(startUrl.text, searchWord.text);
             }
         }
 
@@ -170,8 +165,6 @@ Window {
             id: button1
             text: qsTr("Button")
             onClicked: {
-                progressBar.setValue(0);
-                mytester.counter = 0;
             }
         }
 
