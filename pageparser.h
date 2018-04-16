@@ -14,14 +14,14 @@ class PageParser : public QObject
 public:
     explicit PageParser(QObject *parent = nullptr);
 
-    QQueue<QUrl> parsePage(QUrl, QByteArray, QString) const;
+    void parsePage(QUrl, QByteArray, QString);
     void parseConcurrent(QQueue<QByteArray>);
 signals:
     void addUrl() const;
-    void statusChanged(QUrl, QString) const;
+    void statusChanged(QUrl, QString);
 
 public slots:
-    void onUrlAdded(QUrl, QByteArray, QString);
+    void onUrlDownloaded(QUrl, QByteArray, QString);
 };
 
 #endif // PAGEPARSER_H

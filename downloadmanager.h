@@ -9,6 +9,7 @@
 #include <QQueue>
 #include <QThreadPool>
 #include <QDebug>
+#include <QSignalSpy>
 #include <memory>
 
 class DownloadManager : public QObject
@@ -17,10 +18,11 @@ class DownloadManager : public QObject
 public:
     explicit DownloadManager(unsigned max_thread = 2, QObject *parent = nullptr);
 
-    Q_INVOKABLE void fetchPage(QUrl, QString) const;
+    Q_INVOKABLE void fetchPage(QUrl, QString);
     void fetchConcurrent(QQueue<QUrl>) const;
 signals:
-    void urlAdded(QUrl, QByteArray, QString) const;
+    void urlAdded(QUrl);
+    void urlDownloaded(QUrl, QByteArray, QString);
     void startProcessingTheWholeStory() const;
 
 public slots:

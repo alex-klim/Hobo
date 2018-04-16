@@ -112,10 +112,6 @@ Window {
             Layout.preferredHeight: 224
             Layout.preferredWidth: 431
 
-            DManager {
-                id: dmanager
-            }
-
             TableViewColumn {
                     role: "url"
                     title: "URL"
@@ -127,8 +123,8 @@ Window {
                     width: 119
             }
 
-            model: TableModel {
-              id: myModel
+            model: {
+              id: tmodel;
             }
         }
 
@@ -172,7 +168,7 @@ Window {
             id: button2
             text: qsTr("Button")
             onClicked: {
-                myModel.append("http://newlink", "found");
+
             }
         }
     }

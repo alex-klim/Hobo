@@ -5,8 +5,8 @@ PageParser::PageParser(QObject *parent) : QObject(parent)
 
 }
 
-void PageParser::onUrlAdded(QUrl url, QByteArray data, QString word) {
-    qDebug() << "onUrlAdded";
+void PageParser::onUrlDownloaded(QUrl url, QByteArray data, QString word) {
+    qDebug() << "onUrlDownloaded";
     QString page = QString(data);
     parsePage(url, data, word);
     return;
@@ -21,16 +21,15 @@ void PageParser::parseConcurrent(QQueue<QByteArray> data) {
                                 });*/
 }
 
-QQueue<QUrl> PageParser::parsePage(QUrl url, QByteArray page, QString word) const {
+void PageParser::parsePage(QUrl url, QByteArray page, QString word) {
     qDebug() << "parsePage";
     // Here we searchig for the target word
     if(page.lastIndexOf(word) == -1){
-                emit statusChanged(url, "not found");
-                qDebug() << "emitting status";
-            }
-            else {
-                emit statusChanged(url, "found");
-                qDebug() << "emitting status";
+        qDebug() << "emitting statusChanged";
+        emit statusChanged(url, QString("not found"));
+    } else {
+        qDebug() << "emitting statusChanged";
+        emit statusChanged(url, QString("found"));
     }
     // Here we sending update to our tablemodel
     // Here we iterating over url matching pattern

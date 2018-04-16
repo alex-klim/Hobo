@@ -1,6 +1,7 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
+#include <QSignalSpy>
 #include "tester.h"
 #include "tablemodel.h"
 #include "downloadmanager.h"
@@ -16,14 +17,26 @@ int main(int argc, char *argv[])
     PageParser pparser;
     DownloadManager dmanager;
     TableModel tmodel;
+    QSignalSpy spy(&dmanager, SIGNAL(urlDownloaded(QUrl,QByteArray,QString)));
 
     // bunch of connect statements
-    bool success = QObject::connect(&dmanager, SIGNAL(urlAdded(QUrl,QByteArray,QString)), &pparser, SLOT(onUrlAdded(QUrl,QByteArray,QString)));
+    bool success = QObject::connect(&dmanager, &DownloadManager::urlDownloaded, &pparser, &PageParser::onUrlDownloaded);
     Q_ASSERT(success);
     qDebug() << success;
-    bool success2 = QObject::connect(&pparser, SIGNAL(statusChanged(QUrl,QString)), &tmodel, SLOT(onStatusChanged(QUrl,QString)));
+
+    bool success2 = QObject::connect(&pparser, &PageParser::statusChanged, &tmodel, &TableModel::onStatusChanged);
     Q_ASSERT(success2);
     qDebug() << success2;
+
+    bool success3 = QObject::connect(&dmanager, &DownloadManager::urlAdded, &tmodel, &TableModel::onUrlAdded);
+    Q_ASSERT(success3);
+    qDebug() << success3;
+
+    QObject::connect(&dmanager, &QObject::destroyed,
+                     [=] { qDebug() << "dm deleted";});
+    QObject::connect(&pparser, &QObject::destroyed,
+                     [=] { qDebug() << "pp deleted";});
+    QObject::connect(&app, &QCoreApplication::aboutToQuit, &spy, [&] { qDebug() << spy.count();});
 
     qmlRegisterType<Tester>("cpp.helptypes", 1, 0, "Tester");
     qmlRegisterType<TableModel>("cpp.helptypes", 1, 0, "TableModel");

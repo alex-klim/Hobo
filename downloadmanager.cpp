@@ -5,18 +5,22 @@ DownloadManager::DownloadManager(unsigned max_thread, QObject *parent) : QObject
     QThreadPool::globalInstance()->setMaxThreadCount(max_thread);
 }
 
-void DownloadManager::fetchPage(QUrl url, QString word) const {
+void DownloadManager::fetchPage(QUrl url, QString word) {
     qDebug() << url << word;
     if (url.isEmpty() || word.isEmpty()) {
-        qDebug() << "empty values";
+        qDebug() << "empty initial values";
         return;
     }
+    emit urlAdded(url);
+    qDebug() << "Right before downloading page";
     QNetworkReply* reply = m_manager->get(QNetworkRequest(url));
     QEventLoop loop;
     connect(reply, SIGNAL(finished()), &loop, SLOT(quit()));
     loop.exec();
-    qDebug() << "Wat up";
-    emit urlAdded(url, reply->readAll(), word);
+    qDebug() << "Right after page downloaded";
+
+    emit urlDownloaded(url, reply->readAll(), word);
+    qDebug() << "End of fetchPage";
     //emit startProcessingTheWholeStory();
     reply->deleteLater();
 }
