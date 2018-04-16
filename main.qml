@@ -168,7 +168,6 @@ Window {
             id: button2
             text: qsTr("Button")
             onClicked: {
-
             }
         }
     }

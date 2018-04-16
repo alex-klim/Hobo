@@ -2,7 +2,6 @@
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
 #include <QSignalSpy>
-#include "tester.h"
 #include "tablemodel.h"
 #include "downloadmanager.h"
 #include "pageparser.h"
@@ -38,7 +37,6 @@ int main(int argc, char *argv[])
                      [=] { qDebug() << "pp deleted";});
     QObject::connect(&app, &QCoreApplication::aboutToQuit, &spy, [&] { qDebug() << spy.count();});
 
-    qmlRegisterType<Tester>("cpp.helptypes", 1, 0, "Tester");
     qmlRegisterType<TableModel>("cpp.helptypes", 1, 0, "TableModel");
     qmlRegisterType<DownloadManager>("cpp.helptypes", 1, 0, "DManager");
 
